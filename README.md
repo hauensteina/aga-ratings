@@ -13,7 +13,7 @@ For the JSON format, look at results.csv in this repository.
 Deploying
 -----------
 
-Any push to the mster branch of this repo will automatically deploy to heroku.
+Any push to the master branch of this repository will automatically deploy to heroku.
 If you want to run locally, you need to be on Ubuntu and have python3 installed.
 
 Then:
