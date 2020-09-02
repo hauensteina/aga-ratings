@@ -3,7 +3,7 @@
 # /********************************************************************
 # Filename: aga_ratings/heroku_app.py
 # Author: AHN
-# Creation Date: Sep, 2020
+# Creation Date: Sep 2, 2020
 # **********************************************************************/
 #
 # A REST Api to compute new AGA ratings after a tournament
