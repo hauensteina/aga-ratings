@@ -29,8 +29,8 @@ Test with
 ```
 $ curl -X POST -H "Content-Type: application/json" -d @results.json http://127.0.0.1:8000/run
 ```
-Compiling the C++ part
--------------------------
+Compiling the C++ Executable
+--------------------------------
 
 The ratings are computed by C++ code taken from https://github.com/Fraze/AGA-Ratings-Program,
 which is the code used by the AGA to pull tournament results from their DB, compute new ratings,
