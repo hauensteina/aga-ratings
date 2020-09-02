@@ -10,7 +10,7 @@
 #
 
 from pdb import set_trace as BP
-import os, sys, re, json
+import os, sys, re, json, uuid
 from subprocess import Popen, PIPE
 from flask import Flask, jsonify, request, redirect, url_for
 
@@ -20,6 +20,8 @@ app = Flask( __name__)
 #-----------------------------------------------
 def run():
     """ Compute new ratings from tournament results """
+    infname = ''
+    outfname = ''
     try:
         required_cols = set(['pb_id', 'pb_name', 'pb_rank', 'pb_rating', 'pb_sigma', 'pb_rating_date',
                              'pw_id', 'pw_name', 'pw_rank', 'pw_rating', 'pw_sigma', 'pw_rating_date',
@@ -39,7 +41,7 @@ def run():
         tournament_date = tournament['tournament_date']
 
         # Dump games to csv
-        infname = 'results.csv'
+        infname = 'results_' + uuid.uuid4().hex[:7] + '.csv'
         with open( infname, 'w') as outf:
             # Header
             for idx,col in enumerate(cols):
@@ -56,7 +58,7 @@ def run():
                 outf.write('\n')
 
         # Run ratings
-        outfname = 'new_ratings.csv'
+        outfname = 'new_ratings_' + uuid.uuid4().hex[:7] + '.csv'
         cmd = 'bayrate/bayrate_csv --in %s --out %s --tournament_date %s' % (infname, outfname, tournament_date)
         p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE, close_fds=True)
         stdout, stderr = p.communicate()
@@ -75,6 +77,13 @@ def run():
     except Exception as e:
         resp = {'error': 'Exception: %s' % str(e)}
         return jsonify( resp)
+
+    finally:
+        try:
+            os.remove( infname)
+            os.remove( outfname)
+        except:
+            pass
 
 # Transform csv format to a list of dicts.
 # Takes a list of lines.
@@ -100,18 +109,10 @@ def csv2dict( lines):
 def number( tstr):
     try:
         res = float( tstr)
+        if res == int(res): return int(res)
         return res
     except ValueError:
         return tstr
-
-# Check whether string is numeric
-#----------------------------------------
-def isnum( tstr):
-    try:
-        res = float( tstr)
-        return True
-    except ValueError:
-        return False
 
 #----------------------------
 if __name__ == '__main__':

@@ -829,7 +829,7 @@ void collection::initSeeding( bg::date tournament_date) {
 
 /************************************************************************************
 // dump_new_ratings()
-// Dump new and old ratings for each player as Json.
+// Dump new and old ratings for each player as csv.
 // AHN, Sep 2020
 *************************************************************************************/
 void collection::dump_new_ratings( string outfname, string &error)
@@ -844,7 +844,7 @@ void collection::dump_new_ratings( string outfname, string &error)
     out << "pid, rating_old, sigma_old, rating_new, sigma_new" << endl;
     for (map<int, player>::iterator It = playerHash.begin(); It != playerHash.end(); It++) {
         player &p = It->second;
-        out << p.id << "," << p.initial_rating << "," << p.initial_sigma << "," <<
+        out << int(p.id) << "," << p.initial_rating << "," << p.initial_sigma << "," <<
             p.rating << "," << p.sigma << endl;
     } // for
     if (!out.good()) {
