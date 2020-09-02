@@ -125,20 +125,26 @@ collection::collection( string csvfile)
     this->setQuiet( true);
 
     ISLOOP (rows) {
-        game g;
-        auto row = rows[i];
-        g.black = stoi( row["pb_id"]);
-        g.white = stoi( row["pw_id"]);
-        g.whiteWins = false;
-        if (row["result"].at(0) == 'W' or row["result"].at(0) == 'w') {
-            g.whiteWins = true;
-        }
-        g.handicap = stoi( row["handicap"]);
-        g.komi = stof( row["komi"]);
-        this->gameList.push_back(g);
+        try {
+            game g;
+            auto row = rows[i];
+            g.black = stoi( row["pb_id"]);
+            g.white = stoi( row["pw_id"]);
+            g.whiteWins = false;
+            if (row["result"].at(0) == 'W' or row["result"].at(0) == 'w') {
+                g.whiteWins = true;
+            }
+            g.handicap = stoi( row["handicap"]);
+            g.komi = stof( row["komi"]);
+            this->gameList.push_back(g);
 
-        this->storePlayer( row, 'b');
-        this->storePlayer( row, 'w');
+            this->storePlayer( row, 'b');
+            this->storePlayer( row, 'w');
+        }
+        catch( exception &err) {
+            cerr << "c++-Exception: collection(): " << err.what() << endl;
+            exit(1);
+        }
     } // ISLOOP(rows)
 } // collection( csvfile)
 
@@ -174,35 +180,41 @@ void collection::storePlayer( const map<string,string> &row, char color)
     string name, rating, sigma, rank, rating_date;
     player p;
 
-    if (color == 'w') {
-        id = stoi( row.at("pw_id"));
-        name = row.at("pw_name");
-        rating = row.at("pw_rating");
-        sigma = row.at("pw_sigma");
-        rating_date = row.at("pw_rating_date");
-        rank = row.at("pw_rank");
-    } else {
-        id = stoi( row.at("pb_id"));
-        name = row.at("pb_name");
-        rating = row.at("pb_rating");
-        sigma = row.at("pb_sigma");
-        rating_date = row.at("pb_rating_date");
-        rank = row.at("pb_rank");
-    }
-    if (playerHash.find(id) != playerHash.end()) { // We already have this guy
-        return;
-    }
+    try {
+        if (color == 'w') {
+            id = stoi( row.at("pw_id"));
+            name = row.at("pw_name");
+            rating = row.at("pw_rating");
+            sigma = row.at("pw_sigma");
+            rating_date = row.at("pw_rating_date");
+            rank = row.at("pw_rank");
+        } else {
+            id = stoi( row.at("pb_id"));
+            name = row.at("pb_name");
+            rating = row.at("pb_rating");
+            sigma = row.at("pb_sigma");
+            rating_date = row.at("pb_rating_date");
+            rank = row.at("pb_rank");
+        }
+        if (playerHash.find(id) != playerHash.end()) { // We already have this guy
+            return;
+        }
 
-    p.id = id;
-    p.name = name;
-    p.rank = rank;
-    p.seed = this->rank2seed( rank);
-    p.initial_rating = stof( rating);
-    p.initial_sigma = stof( sigma);
-    p.sigma = p.initial_sigma;
-    p.rating = p.initial_rating;
+        p.id = id;
+        p.name = name;
+        p.rank = rank;
+        p.seed = this->rank2seed( rank);
+        p.initial_rating = stof( rating);
+        p.initial_sigma = stof( sigma);
+        p.sigma = p.initial_sigma;
+        p.rating = p.initial_rating;
 
-    this->playerHash[id] = p;
+        this->playerHash[id] = p;
+    }
+    catch( exception &err) {
+        cerr << "c++-Exception: storePLayer(): " << err.what() << endl;
+        exit(1);
+    }
 } // storePlayer()
 
 

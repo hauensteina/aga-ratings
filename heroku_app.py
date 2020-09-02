@@ -11,6 +11,7 @@
 
 from pdb import set_trace as BP
 import os, sys, re, json
+from subprocess import Popen, PIPE
 from flask import Flask, jsonify, request, redirect, url_for
 
 app = Flask( __name__)
@@ -30,7 +31,8 @@ def run():
         if not 'games' in tournament:
             resp = {'error': 'no games'}
             return jsonify( resp)
-        cols = games[0].keys()
+        games = tournament['games']
+        cols = list(games[0].keys())
         if not set(cols) == required_cols:
             resp = {'error': 'game keys must be: %s' % str(required_cols)}
             return jsonify( resp)
@@ -45,17 +47,17 @@ def run():
                 outf.write( col)
             outf.write('\n')
             for game in games:
-                for idx,key in enumerate(game.keys()):
+                for idx,key in enumerate(game):
                     if not key == cols[idx]:
                         resp = {'error': 'bad game: %s' % str(game)}
                         return jsonify( resp)
                     if idx: outf.write(',')
-                    outf.write( game['col'])
+                    outf.write( str(game[key]))
                 outf.write('\n')
 
         # Run ratings
         outfname = 'new_ratings.csv'
-        cmd = 'bayrate/bayesrate_csv --in %s --out %s --tournament_date %s' % (infname, outfname, tournament_date)
+        cmd = 'bayrate/bayrate_csv --in %s --out %s --tournament_date %s' % (infname, outfname, tournament_date)
         p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE, close_fds=True)
         stdout, stderr = p.communicate()
 
@@ -74,12 +76,12 @@ def run():
         resp = {'error': 'Exception: %s' % str(e)}
         return jsonify( resp)
 
-# Transform csv format to a list of dicts
+# Transform csv format to a list of dicts.
+# Takes a list of lines.
 #-------------------------------------------
-def csv2dict( csvstr):
-    lines = csvstr.split('\n')
-    colnames = []
+def csv2dict( lines):
     res = []
+    colnames = []
     for idx, line in enumerate( lines):
         line = line.strip()
         if len(line) == 0: continue
@@ -91,7 +93,7 @@ def csv2dict( csvstr):
             continue
         ddict = { col:number(words[idx]) for idx,col in enumerate(colnames) }
         res.append(ddict)
-    return res, colnames
+    return res
 
 # Convert a string to a float, if it is a number
 #--------------------------------------------------
@@ -101,6 +103,15 @@ def number( tstr):
         return res
     except ValueError:
         return tstr
+
+# Check whether string is numeric
+#----------------------------------------
+def isnum( tstr):
+    try:
+        res = float( tstr)
+        return True
+    except ValueError:
+        return False
 
 #----------------------------
 if __name__ == '__main__':

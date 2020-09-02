@@ -1,0 +1,37 @@
+
+{ "tournament_date": "2020-09-02",
+  "games": [
+    { "pb_id":1,
+      "pb_name":"Joe Schmoe",
+      "pb_rank":"1D",
+      "pb_rating":1.1,
+      "pb_sigma":0.1,
+      "pb_rating_date":"2020-01-31",
+      "pw_id":2,
+      "pw_name":"Jane Doe",
+      "pw_rank":"2D",
+      "pw_rating":2.1,
+      "pw_sigma":0.2,
+      "pw_rating_date":"2010-01-31",
+      "komi":0.5,
+      "handicap":2,
+      "result":"b+12"
+    },
+    { "pb_id":3,
+      "pb_name":"Alfred E. Neumann",
+      "pb_rank":"1D",
+      "pb_rating":1.2,
+      "pb_sigma":0.12,
+      "pb_rating_date":"2015-07-30",
+      "pw_id":4,
+      "pw_name":"Don Martin",
+      "pw_rank":"2D",
+      "pw_rating":2.2,
+      "pw_sigma":0.22,
+      "pw_rating_date":"2020-01-31",
+      "komi":7.5,
+      "handicap":0,
+      "result":"W+1.5"
+    }
+  ]
+}
