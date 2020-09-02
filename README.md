@@ -4,7 +4,9 @@ REST Interface to run AGA ratings via  https://aga-ratings.herokuapp.com/run
 Usage
 --------
 
+```
 $ curl -X POST -H "Content-Type: application/json" -d @results.json https://aga-ratings.herokuapp.com/run
+```
 
 For the JSON format, look at results.csv in this repository.
 
@@ -15,17 +17,18 @@ Any push to the mster branch of this repo will automatically deploy to heroku.
 If you want to run locally, you need to be on Ubuntu and have python3 installed.
 
 Then:
-
+```
 $ cd aga-ratings
 $ python -m venv venv
 $ source venv/bin/activate
 $ pip install -r requirements.txt
 $ python heroku_app.py
+```
 
 Test with
-
+```
 $ curl -X POST -H "Content-Type: application/json" -d @results.json http://127.0.0.1:8000/run
-
+```
 Compiling the C++ part
 -------------------------
 
@@ -37,7 +40,7 @@ and converts the output back to JSON.
 
 If you want to change how the ratings work, you need to compile bayrate_csv on a 64-bit Ubuntu box.
 In detail:
-
+```
 $ cd bayrate
 $ sudo apt-get install libgsl0ldbl
 $ sudo apt-get install libgsl23 libgslcblas0
@@ -48,7 +51,7 @@ $ make clean bayrate_csv
 $ git add -u
 $ git commit -m 'c++ is much better now'
 $ git push origin master
-
+```
 
 === The End ===
 
