@@ -15,7 +15,7 @@ FLAGS=-g -Wall
 all: bayrate_csv bayrate check basicrate copyMembership syncDBs
 
 bayrate_csv: bayrate_csv.cpp collection.o game.o player.o
-	g++ $(FLAGS) collection.o game.o bayrate_csv.cpp player.o $(LIBS_MAIN) -o bayrate_csv
+	g++ $(FLAGS) -static collection.o game.o bayrate_csv.cpp player.o $(LIBS_MAIN) -o bayrate_csv
 
 bayrate: bayrate.cpp db.o collection.o game.o player.o
 	g++ $(FLAGS) db.o collection.o game.o bayrate.cpp player.o $(INC) $(LIBS) -o bayrate
