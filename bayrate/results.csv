@@ -1,0 +1,8 @@
+
+
+
+pb_id, pb_name, pb_rank, pb_rating, pb_sigma, pb_rating_date, pw_id, pw_name, pw_rank, pw_rating, pw_sigma, pw_rating_date, komi, handicap, result
+1,     "Joe Schmoe", 1D, 1.1, 0.1, 2020-01-31, 2, "Jane Doe", 2D, 2.1, 0.2, 2010-12-31, 0.5, 2, b+12
+# Some comment
+
+3,     "Alfred E. Neumann", 1D, 1.2, 0.12, 2015-07-30, 4, "Don Martin", 2D, 2.2, 0.22, 2020-01-31, 7.5, 0, W+1.5
