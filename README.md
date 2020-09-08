@@ -8,7 +8,7 @@ Usage
 $ curl -X POST -H "Content-Type: application/json" -d @results.json https://aga-ratings.herokuapp.com/run
 ```
 
-For the JSON format, look at results.csv in this repository.
+For the JSON format, look at results.json in this repository.
 
 Deploying
 -----------
